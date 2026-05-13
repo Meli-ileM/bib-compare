@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparaison VBar D3 vs ECharts</title>
+  <link rel="stylesheet" href="./compare-common.css" />
+</head>
+<body>
+  <h1>VBAR: D3 plateforme vs ECharts</h1>
+  <p class="sub">Meme payload single tuple et meme logique de calcul pour comparer les rendus.</p>
+  
+  <div class="explain">
+    <p><strong>Cas d'usage:</strong> comparer plusieurs mesures d'un meme indicateur en orientation verticale (barres positives et negatives).</p>
+    <p><strong>Donnees:</strong> single tuple avec une liste de cles (value/reference/delta) et une valeur numerique par cle.</p>
+  </div>
+
+  <div class="links">
+    <a href="./compare-index.html">INDEX</a>
+    <a href="./hbar-compare.html">HBAR</a>
+    <a href="./vbar-compare.html">VBAR</a>
+    <a href="./multi-vbar-compare.html">MULTI_VBAR</a>
+    <a href="./multi-hbar-compare.html">MULTI_HBAR</a>
+    <a href="./multi-line-compare.html">MULTI_LINE</a>
+    <a href="./multi-radar-compare.html">MULTI_RADAR</a>
+    <a href="./waterfall-compare.html">WATERFALL</a>
+    <a href="./radial-compare.html">RADIAL</a>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>D3 VBar (logique du composant)</h2>
+      <div id="d3Chart" class="chart-wrap"></div>
+    </section>
+    <section class="card">
+      <h2>ECharts VBar (equivalent metier)</h2>
+      <div id="echartsChart" class="chart-wrap"></div>
+    </section>
+  </div>
+
+  <pre id="payload"></pre>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="./vbar-compare.js"></script>
+</body>
+</html>

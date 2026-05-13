@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>12 nouveaux graphiques — Proposition GME</title>
+<style>
+/* ── Reset & base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#263349;
+  --border:#334155;--border2:#475569;
+  --text:#f1f5f9;--text2:#94a3b8;--text3:#64748b;
+  --blue:#3b82f6;--violet:#8b5cf6;--emerald:#10b981;
+  --amber:#f59e0b;--rose:#f43f5e;--cyan:#06b6d4;--orange:#f97316;
+  --r:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+
+/* ── Hero ── */
+.hero{
+  background:linear-gradient(135deg,#0f172a 0%,#1a1040 35%,#0f172a 70%,#0a1628 100%);
+  padding:56px 40px 48px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 70% 40%,rgba(139,92,246,.18),transparent),
+             radial-gradient(ellipse 40% 60% at 20% 80%,rgba(59,130,246,.12),transparent);
+  pointer-events:none;
+}
+@keyframes grad{0%,100%{opacity:.6}50%{opacity:1}}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle 500px at 65% 45%,rgba(99,102,241,.08),transparent);
+  animation:grad 6s ease-in-out infinite;pointer-events:none;
+}
+.hero-inner{max-width:860px;position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--violet),var(--blue));
+  color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 14px;border-radius:99px;margin-bottom:24px;
+}
+.hero-subtitle{color:var(--text2);font-size:14px;margin-bottom:10px;letter-spacing:.03em}
+.hero h1{font-size:clamp(32px,5vw,54px);font-weight:800;line-height:1.1;margin-bottom:16px}
+.hero h1 span{
+  background:linear-gradient(90deg,var(--blue),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-desc{color:var(--text2);max-width:600px;font-size:15px;line-height:1.7;margin-bottom:28px}
+.hero-desc code{
+  color:var(--violet);background:rgba(139,92,246,.12);
+  padding:1px 5px;border-radius:4px;font-size:13px;font-family:monospace;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px}
+.hero-tag{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--text2);font-size:13px;padding:6px 14px;border-radius:99px;
+  transition:border-color .2s,color .2s;
+}
+.hero-tag:hover{border-color:var(--blue);color:var(--text)}
+.hero-tag .ti{font-style:normal}
+
+/* ── Stats strip ── */
+.stats-strip{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 40px;display:flex;align-items:stretch;gap:0;
+}
+.stat-item{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 32px 16px 0;margin-right:32px;
+  border-right:1px solid var(--border);
+}
+.stat-item:last-child{border-right:none}
+.stat-n{
+  font-size:28px;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{color:var(--text2);font-size:12px;line-height:1.4;max-width:120px}
+
+/* ── Context bar ── */
+.ctx-bar{
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  padding:14px 40px;display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;
+}
+.ctx-label{color:var(--text3);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:2px;white-space:nowrap}
+.ctx-chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:3px 9px;border-radius:6px;border:1px solid;
+}
+.chip-exist{color:#94a3b8;border-color:#334155;background:transparent}
+.chip-new{color:var(--violet);border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.08)}
+
+/* ── Page ── */
+.page{max-width:940px;margin:0 auto;padding:0 28px 80px}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;color:var(--text3);
+  font-size:13px;text-decoration:none;padding:20px 0 32px;
+  transition:color .2s;
+}
+.back-link:hover{color:var(--blue)}
+
+/* ── Section header ── */
+.sec{margin-bottom:12px;padding-top:52px}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.sec-num{
+  width:44px;height:44px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:800;color:#fff;letter-spacing:-.5px;
+}
+.sec-title{font-size:22px;font-weight:700}
+.sec-sub{color:var(--text2);font-size:14px;margin-left:60px;margin-bottom:28px}
+
+/* ── Cards grid ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:20px}
+
+/* ── Card ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  transition:border-color .25s,box-shadow .25s;
+  position:relative;
+}
+.card:hover{border-color:var(--border2);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.card-accent{height:3px;width:100%}
+.card-body{padding:20px 20px 0}
+.card-meta{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.b-type{
+  font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:6px;
+}
+.b-mod{
+  font-size:11px;color:var(--text3);
+  padding:3px 8px;border-radius:6px;border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  font-family:monospace;
+}
+.card h3{font-size:16px;font-weight:700;margin-bottom:10px;line-height:1.3}
+.card-desc{margin-bottom:16px}
+.card-desc p{color:var(--text2);font-size:13.5px;line-height:1.65;margin-bottom:8px}
+.card-desc ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.card-desc li{display:flex;gap:8px;font-size:13px;line-height:1.5}
+.card-desc li .ico{flex-shrink:0;font-style:normal;margin-top:1px}
+.card-desc .li-problem .ico{color:var(--rose)}
+.card-desc .li-good .ico{color:var(--emerald)}
+/* ── Questions métier ── */
+.card-questions{margin:14px 0 0;padding:12px 14px;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px}
+.cq-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);margin-bottom:8px;opacity:.9}
+.card-questions ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.card-questions li{font-size:12.5px;color:var(--text2);line-height:1.5;padding-left:14px;position:relative}
+.card-questions li::before{content:'?';position:absolute;left:0;font-weight:800;color:var(--violet);font-size:11px;top:1px}
+/* ── Comment lire ── */
+.card-howto{display:flex;gap:9px;align-items:flex-start;margin-top:10px;padding:10px 13px;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.18);border-radius:10px;font-size:12.5px;color:var(--text2);line-height:1.55}
+.card-howto .howto-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.card-howto strong{color:var(--cyan)}
+
+/* ── Chart wrapper ── */
+.cw{height:280px;width:100%;background:rgba(15,23,42,.5);margin-bottom:0}
+.cw-tall{height:320px}
+
+/* ── Gauge metrics strip ── */
+.gauge-metrics{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;
+  padding:12px 20px 16px;background:rgba(15,23,42,.3);border-top:1px solid var(--border);
+}
+.gm-item{display:flex;flex-direction:column;gap:3px}
+.gm-header{display:flex;justify-content:space-between;align-items:baseline}
+.gm-title{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.gm-val{font-size:12px;font-weight:700;color:var(--text)}
+.gm-track{height:5px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.gm-fill{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* ── Payload ── */
+.card-payload{border-top:1px solid var(--border)}
+details{padding:0}
+details summary{
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;color:var(--text3);font-size:12px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;user-select:none;
+  transition:color .2s,background .2s;
+}
+details summary:hover{color:var(--text2);background:rgba(255,255,255,.02)}
+details summary::after{content:'▸';font-size:11px;transition:transform .2s}
+details[open] summary::after{transform:rotate(90deg)}
+details pre{
+  font-size:11px;font-family:'Consolas',monospace;line-height:1.6;
+  color:#7dd3fc;background:rgba(7,89,133,.12);
+  padding:12px 20px;overflow-x:auto;
+  border-top:1px solid var(--border);max-height:200px;
+}
+
+/* ── Footer ── */
+.footer{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);margin-top:60px;overflow:hidden;
+}
+.footer-head{padding:24px 28px 16px;border-bottom:1px solid var(--border)}
+.footer-head h2{font-size:18px;font-weight:700;margin-bottom:4px}
+.footer-head p{color:var(--text2);font-size:13px}
+.typeviz-code{
+  font-size:12px;font-family:monospace;line-height:2;
+  color:#7dd3fc;background:rgba(7,89,133,.12);
+  padding:16px 28px;border-bottom:1px solid var(--border);overflow-x:auto;
+}
+.effort-table{width:100%;border-collapse:collapse}
+.effort-table th,.effort-table td{padding:10px 20px;font-size:13px;text-align:left;border-bottom:1px solid var(--border)}
+.effort-table th{color:var(--text3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)}
+.effort-table td:first-child{font-weight:700;font-family:monospace;font-size:12px;letter-spacing:.04em}
+.e-low{color:var(--emerald)}
+.e-med{color:var(--amber)}
+.e-high{color:var(--rose)}
+.effort-table tr:last-child td{border-bottom:none}
+.footer-note{padding:16px 28px;color:var(--text3);font-size:12px;line-height:1.7;border-top:1px solid var(--border)}
+
+/* ── Export button ── */
+.cw-wrap{position:relative}
+.cw-wrap:hover .btn-export{opacity:1;transform:translateY(0)}
+.btn-export{
+  position:absolute;top:8px;right:8px;z-index:10;
+  display:flex;align-items:center;gap:5px;
+  background:rgba(15,23,42,.85);border:1px solid #334155;
+  color:#94a3b8;font-size:11px;font-weight:600;font-family:'Segoe UI',system-ui,sans-serif;
+  padding:5px 10px;border-radius:8px;cursor:pointer;
+  opacity:0;transform:translateY(-4px);
+  transition:opacity .2s,transform .2s,border-color .2s,color .2s;
+  backdrop-filter:blur(4px);
+}
+.btn-export:hover{border-color:#3b82f6;color:#60a5fa}
+.btn-export svg{flex-shrink:0}
+
+/* ── Color accents per type ── */
+.accent-blue{background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.accent-violet{background:linear-gradient(90deg,var(--violet),var(--blue))}
+.accent-emerald{background:linear-gradient(90deg,var(--emerald),var(--cyan))}
+.accent-amber{background:linear-gradient(90deg,var(--amber),var(--orange))}
+.accent-rose{background:linear-gradient(90deg,var(--rose),var(--violet))}
+.accent-cyan{background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.accent-orange{background:linear-gradient(90deg,var(--orange),var(--amber))}
+.btype-blue{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.btype-violet{background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.2)}
+.btype-emerald{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+.btype-amber{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.btype-rose{background:rgba(244,63,94,.12);color:#fb7185;border:1px solid rgba(244,63,94,.2)}
+.btype-cyan{background:rgba(6,182,212,.12);color:#22d3ee;border:1px solid rgba(6,182,212,.2)}
+.btype-orange{background:rgba(249,115,22,.12);color:#fb923c;border:1px solid rgba(249,115,22,.2)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Proposition d'évolution</div>
+    <p class="hero-subtitle">ECharts v5 · Vue 2.7 · Format données backend · Intégration report-indicator-graph.tsx</p>
+    <h1>12 nouveaux graphiques<br><span>pour la plateforme GME</span></h1>
+    <p class="hero-desc">
+      Visualisations avancées à intégrer dans le moteur d'analyse. Chaque graphique utilise le format de données exact du backend — prêts à câbler dans <code>report-indicator-graph.tsx</code>.
+      Chaque carte détaille le cas d'usage concret, ce que ça remplace, et l'effort d'intégration.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag"><span class="ti">⚙</span> Moteur analyse</span>
+      <span class="hero-tag"><span class="ti">📊</span> Module reportings</span>
+      <span class="hero-tag"><span class="ti">🗺</span> Map-viewer</span>
+      <span class="hero-tag"><span class="ti">�?�</span> Widget dashboard</span>
+      <span class="hero-tag"><span class="ti">✅</span> Tasks &amp; collecte</span>
+      <span class="hero-tag"><span class="ti">�?</span> Template editor</span>
+      <button onclick="exportAll()" style="
+        display:flex;align-items:center;gap:7px;
+        background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+        border:none;color:#fff;font-size:13px;font-weight:700;
+        padding:8px 18px;border-radius:99px;cursor:pointer;
+        font-family:'Segoe UI',system-ui,sans-serif;
+        box-shadow:0 4px 16px rgba(59,130,246,.35);
+        transition:opacity .2s,transform .2s;
+      " onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+        Exporter tous les graphiques
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <span class="stat-n">12</span>
+    <span class="stat-label">nouveaux TypeViz proposés</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-n">6</span>
+    <span class="stat-label">sections thématiques</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-n">7</span>
+    <span class="stat-label">graphiques sans nouveau backend</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-n">0</span>
+    <span class="stat-label">dépendance à ajouter (ECharts CDN)</span>
+  </div>
+</div>
+
+<!-- CONTEXT BAR -->
+<div class="ctx-bar">
+  <div>
+    <div class="ctx-label">TypeViz existants</div>
+    <div class="ctx-chips" style="margin-top:4px">
+      <span class="chip chip-exist">VBAR</span>
+      <span class="chip chip-exist">HBAR</span>
+      <span class="chip chip-exist">MULTI_VBAR</span>
+      <span class="chip chip-exist">MULTI_HBAR</span>
+      <span class="chip chip-exist">MULTI_RADAR</span>
+      <span class="chip chip-exist">MULTI_LINE</span>
+      <span class="chip chip-exist">WATERFALL</span>
+      <span class="chip chip-exist">TABLE</span>
+      <span class="chip chip-exist">TEXT</span>
+    </div>
+  </div>
+  <div>
+    <div class="ctx-label">Nouveaux proposés</div>
+    <div class="ctx-chips" style="margin-top:4px">
+      <span class="chip chip-new">SCATTER</span>
+      <span class="chip chip-new">HEATMAP</span>
+      <span class="chip chip-new">STACKED_AREA</span>
+      <span class="chip chip-new">CALENDAR</span>
+      <span class="chip chip-new">TREEMAP</span>
+      <span class="chip chip-new">SUNBURST</span>
+      <span class="chip chip-new">BOXPLOT</span>
+      <span class="chip chip-new">GAUGE</span>
+      <span class="chip chip-new">SANKEY</span>
+      <span class="chip chip-new">FUNNEL</span>
+      <span class="chip chip-new">PARALLEL</span>
+      <span class="chip chip-new">NIGHTINGALE</span>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <a href="./compare-index.html" class="back-link">�? Retour à l'accueil des comparaisons</a>
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 01 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div>
+        <div class="sec-title">Analyse &amp; Corrélation</div>
+      </div>
+    </div>
+    <p class="sec-sub">Croiser plusieurs indicateurs simultanément — identifier les zones atypiques, les corrélations et les anomalies</p>
+    <div class="grid">
+
+      <!-- SCATTER -->
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-blue">SCATTER</span>
+            <span class="b-mod">analysis</span>
+            <span class="b-mod">engines</span>
+          </div>
+          <h3>Corrélation inter-indicateurs sur les territoires</h3>
+          <div class="card-desc">
+            <p>Sélectionner 2 indicateurs du moteur d'analyse et voir instantanément leur corrélation sur toutes les communes, avec quadrants colorés et ligne de tendance.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : impossible de voir si l'IRI et le taux de dégradation sont liés — deux rapports séparés obligatoires.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Identifie les zones «&nbsp;double risque&nbsp;» (rouge) vs «&nbsp;bon état&nbsp;» (vert) en un coup d'œil.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Outliers automatiquement détectés — communes anormalement coûteuses par rapport à leur état.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Ligne de tendance (régression linéaire) calculée côté frontend avec les données déjà présentes.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-scatter" class="cw"></div>
+          <button class="btn-export" onclick="exportChart('chart-scatter','Corrélation IRI-Dégradation')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-scatter"></pre></details>
+        </div>
+      </div>
+
+      <!-- HEATMAP -->
+      <div class="card">
+        <div class="card-accent accent-violet"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-violet">HEATMAP</span>
+            <span class="b-mod">analysis</span>
+            <span class="b-mod">reportings</span>
+          </div>
+          <h3>Matrice synthétique — tous indicateurs × tous territoires</h3>
+          <div class="card-desc">
+            <p>Vue d'ensemble en un seul graphique&nbsp;: chaque cellule est le score d'un indicateur pour une commune, normalisé sur l'ensemble du parc.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : les tableaux statiques dans les rapports nécessitent 3 pages pour couvrir 8 zones × 6 indicateurs.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Repère d'un coup d'œil les communes à risque (ligne rouge) et les indicateurs les plus problématiques (colonne rouge).</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Même format multi-items existant, normalisation calculable côté serveur ou frontend.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Idéal pour les exports PDF de rapports de synthèse annuels.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Quelle commune cumule les pires scores sur tous les indicateurs&nbsp;?</li>
+              <li>Quel indicateur est systématiquement rouge sur l'ensemble des territoires&nbsp;?</li>
+              <li>Y a-t-il un cluster géographique de communes à risque&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Ligne = territoire, colonne = indicateur. Une ligne entièrement rouge = commune à traiter en urgence. Une colonne entièrement rouge = indicateur défaillant sur tout le périmètre. Passer la souris sur une cellule = valeur exacte.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-heatmap" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-heatmap','Heatmap-Zones-Indicateurs')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-heatmap"></pre></details>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+  </div><!-- /sec 01 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 02 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div><div class="sec-title">Temporel &amp; Activité</div></div>
+    </div>
+    <p class="sec-sub">Suivre l'évolution dans le temps — budgets pluriannuels, campagnes terrain, tendances saisonnières</p>
+    <div class="grid">
+
+      <!-- STACKED AREA -->
+      <div class="card">
+        <div class="card-accent accent-emerald"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-emerald">STACKED_AREA</span>
+            <span class="b-mod">reportings</span>
+            <span class="b-mod">analysis</span>
+          </div>
+          <h3>Évolution du budget travaux par catégorie — pluriannuel</h3>
+          <div class="card-desc">
+            <p>Surface empilée des dépenses par type de travaux (revêtement, structure, signalisation, entretien) sur 5 ans. Révèle les glissements budgétaires progressifs.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : MULTI_LINE ne montre pas le volume total — impossible de voir si le budget global a augmenté ou diminué.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>La hauteur totale = budget total annuel, la composition = répartition par catégorie.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Même format multi-items existant&nbsp;: aucun changement backend requis.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Utilisé dans les rapports pluriannuels et les présentations aux élus.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Le budget total a-t-il augmenté ces 5 ans, ou est-ce un simple rééquilibrage entre catégories&nbsp;?</li>
+              <li>Quelle catégorie de travaux a le plus progressé en part relative&nbsp;?</li>
+              <li>Y a-t-il une année d'investissement exceptionnel (pic visible)&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> La hauteur totale de la courbe = budget total annuel. Chaque bande colorée = une catégorie de travaux. Un rétrécissement d'une bande sans baisse de la hauteur totale = une autre catégorie a pris sa place.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-area" class="cw"></div>
+          <button class="btn-export" onclick="exportChart('chart-area','Budget-Travaux-Pluriannuel')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-area"></pre></details>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div class="card">
+        <div class="card-accent accent-cyan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-cyan">CALENDAR</span>
+            <span class="b-mod">tasks</span>
+            <span class="b-mod">data-importer</span>
+          </div>
+          <h3>Activité d'inspection terrain — vue calendaire annuelle</h3>
+          <div class="card-desc">
+            <p>Heatmap calendaire de l'activité d'inspection (nombre de tronçons inspectés par jour) — révèle les campagnes printanières et automnales en un coup d'œil.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : le module Tasks liste les tâches sans vue de la densité temporelle — impossible de détecter les périodes creuses.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Identifie les gaps de collecte (cases grises) qui créent des biais dans les données.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format spécifique&nbsp;: uid = date ISO 8601, d = nombre d'inspections ce jour-là.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Nouveau format temporel simple à ajouter à l'endpoint Tasks existant.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Y a-t-il des mois sans aucune inspection, créant des biais dans les données annuelles&nbsp;?</li>
+              <li>La collecte est-elle concentrée sur 2-3 semaines intenses ou répartie sur l'année&nbsp;?</li>
+              <li>Les campagnes terrain printanières et automnales sont-elles équilibrées&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Chaque case = un jour de l'année. Case grise = 0 inspection. Plus la case est foncée, plus l'activité terrain était intense ce jour-là. Un grand espace gris = période à risque de données manquantes dans l'analyse.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-calendar" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-calendar','Calendrier-Inspections-2024')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-calendar"></pre></details>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /sec 02 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 03 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div><div class="sec-title">Hiérarchie &amp; Répartition</div></div>
+    </div>
+    <p class="sec-sub">Explorer les structures imbriquées — du programme au tronçon, de la région à la commune</p>
+    <div class="grid">
+
+      <!-- TREEMAP -->
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-amber">TREEMAP</span>
+            <span class="b-mod">reportings</span>
+            <span class="b-mod">analysis</span>
+          </div>
+          <h3>Répartition hiérarchique du budget travaux</h3>
+          <div class="card-desc">
+            <p>Surface proportionnelle au montant. Drill-down en un clic&nbsp;: Programme → Sous-programme → Nature d'intervention.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : un HBAR ne montre qu'un niveau — impossible de visualiser la hiérarchie Programme→Nature en un seul graphique.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Révèle immédiatement les déséquilibres entre types de travaux et zones géographiques.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Drill-down interactif pour les présentations en comité de pilotage.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Nécessite un champ <code>children</code> dans les items — nouveau endpoint backend léger.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Quelle nature d'intervention absorbe la plus grande part du budget cette année&nbsp;?</li>
+              <li>Existe-t-il des sous-programmes sous-financés par rapport à leur importance terrain&nbsp;?</li>
+              <li>La répartition est-elle équilibrée ou dominée par 1-2 postes qui écrasent tout le reste&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Surface d'un rectangle = montant proportionnel. Cliquer sur un rectangle = zoomer dans la hiérarchie (Programme → Sous-programme → Nature). La couleur distingue les grands programmes. Plus un rectangle est grand, plus le poste est budgétairement dominant.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-treemap" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-treemap','Treemap-Budget-Hierarchique')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-treemap"></pre></details>
+        </div>
+      </div>
+
+      <!-- SUNBURST -->
+      <div class="card">
+        <div class="card-accent accent-rose"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-rose">SUNBURST</span>
+            <span class="b-mod">map-viewer</span>
+            <span class="b-mod">analysis</span>
+          </div>
+          <h3>Hiérarchie territoriale colorée par score</h3>
+          <div class="card-desc">
+            <p>Roue concentrique&nbsp;: Département → EPCI → Communes. La couleur encode le score IRI (vert = bon état, rouge = prioritaire).</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : la carte et le tableau ne montrent pas la structure hiérarchique Dept→EPCI→Commune simultanément.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Permet de voir si la dégradation est concentrée dans un EPCI particulier ou dispersée.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Drill-down interactif — cliquer sur un EPCI zoome sur ses communes.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Même format hiérarchique que TREEMAP&nbsp;: réutilisation du même endpoint.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>La dégradation est-elle concentrée dans un EPCI particulier ou dispersée sur tout le département&nbsp;?</li>
+              <li>Quelles communes tirent le score d'un EPCI globalement bon vers le bas&nbsp;?</li>
+              <li>Existe-t-il des communes anormalement dégradées dans un EPCI avec un bon score moyen&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Anneau intérieur = Département. Anneau du milieu = EPCIs. Anneau extérieur = Communes. Rouge = score IRI faible / prioritaire, vert = bon état. Cliquer sur un segment = zoomer sur ses sous-niveaux. Revenir = clic au centre.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-sunburst" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-sunburst','Sunburst-Hierarchie-Territoriale')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-sunburst"></pre></details>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /sec 03 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 04 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div><div class="sec-title">Distribution &amp; KPI</div></div>
+    </div>
+    <p class="sec-sub">Comprendre les distributions, les écarts-types et les scores synthétiques par territoire</p>
+    <div class="grid">
+
+      <!-- BOXPLOT -->
+      <div class="card">
+        <div class="card-accent accent-violet"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-violet">BOXPLOT</span>
+            <span class="b-mod">analysis</span>
+            <span class="b-mod">engines</span>
+          </div>
+          <h3>Distribution des scores IRI par classe de route</h3>
+          <div class="card-desc">
+            <p>Boîtes à moustaches&nbsp;: médiane, quartiles, min/max et outliers par type de voirie. Indispensable pour comprendre la dispersion réelle des notes.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : une moyenne cache tout — une route communale à 30 et une à 80 donnent une moyenne de 55, indiscernable d'une route homogène.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Révèle les routes «&nbsp;outliers&nbsp;» à traiter en urgence que la moyenne dissimule.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Comparaison directe des 5 classes de route dans un seul graphique.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>d devient array [min,Q1,med,Q3,max] — calcul simple côté serveur sur les données déjà disponibles.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Y a-t-il des tronçons très dégradés que la moyenne dissimule complètement&nbsp;?</li>
+              <li>Les routes communales sont-elles plus hétérogènes (dispersées) que les routes départementales&nbsp;?</li>
+              <li>Quelle classe de route concentre les outliers les plus problématiques à traiter en urgence&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Ligne centrale de la boîte = médiane (valeur du tronçon «&nbsp;du milieu&nbsp;»). La boîte englobe 50&nbsp;% des tronçons. Les moustaches = min/max hors outliers. Les points isolés = tronçons exceptionnellement bons ou mauvais à inspecter en priorité.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-boxplot" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-boxplot','Boxplot-Distribution-IRI')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-boxplot"></pre></details>
+        </div>
+      </div>
+
+      <!-- GAUGE -->
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-blue">GAUGE</span>
+            <span class="b-mod">homepage</span>
+            <span class="b-mod">widget-dashboard</span>
+          </div>
+          <h3>Score synthétique territoire avec sous-indicateurs</h3>
+          <div class="card-desc">
+            <p>Jauge principale (score global /100) avec 4 indicateurs détaillés en dessous — vue exécutive idéale pour les dashboards de direction.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : la homepage affiche un chiffre brut sans contexte — impossible de voir quels sous-indicateurs tirent le score vers le bas.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Score global + détail IRI, Dégradations, Inspection, Budget en une seule vue.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Couleur de la jauge s'adapte automatiquement (vert ≥ 70, orange ≥ 50, rouge en-dessous).</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format single-item existant — aucun changement backend pour le score global.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-gauge" class="cw"></div>
+          <button class="btn-export" onclick="exportChart('chart-gauge','Gauge-Score-Synthetique')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="gauge-metrics" id="gauge-metrics"></div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-gauge"></pre></details>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /sec 04 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 05 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div><div class="sec-title">Flux &amp; Processus</div></div>
+    </div>
+    <p class="sec-sub">Visualiser où va l'argent et où se perdent les étapes — budget, collecte, validation</p>
+    <div class="grid">
+
+      <!-- SANKEY -->
+      <div class="card">
+        <div class="card-accent accent-orange"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-orange">SANKEY</span>
+            <span class="b-mod">reportings</span>
+            <span class="b-mod">analysis</span>
+          </div>
+          <h3>Flux de budget — sources vers natures d'intervention</h3>
+          <div class="card-desc">
+            <p>Diagramme de flux&nbsp;: Source budgétaire → Type de travaux → Zone géographique. L'épaisseur des liens est proportionnelle aux montants.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : aucun graphique ne montre simultanément d'où vient le budget ET où il va — deux tableaux séparés obligatoires.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Révèle immédiatement les déséquilibres de financement entre territoires et types de travaux.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Idéal pour les rapports de programmation pluriannuelle présentés aux financeurs.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format spécifique nœuds + liens — nouveau endpoint léger basé sur les données budgétaires existantes.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Quelle source de financement alimente quelles zones géographiques, et dans quelles proportions&nbsp;?</li>
+              <li>Certaines zones sont-elles systématiquement sous-financées par rapport à d'autres&nbsp;?</li>
+              <li>Le budget État va-t-il majoritairement aux travaux structurels ou à l'entretien courant&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Suivre une couleur de gauche à droite = tracer un flux de sa source à sa destination finale. L'épaisseur d'un lien = montant proportionnel. Un nœud central très large = point de concentration du budget. Survoler un lien = voir le montant exact.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-sankey" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-sankey','Sankey-Flux-Budget')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-sankey"></pre></details>
+        </div>
+      </div>
+
+      <!-- FUNNEL -->
+      <div class="card">
+        <div class="card-accent accent-emerald"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-emerald">FUNNEL</span>
+            <span class="b-mod">tasks</span>
+            <span class="b-mod">data-importer</span>
+          </div>
+          <h3>Pipeline d'inspection terrain — taux de complétion par étape</h3>
+          <div class="card-desc">
+            <p>Entonnoir du processus d'inspection&nbsp;: de l'identification des tronçons jusqu'à la programmation des travaux. Chaque rétrécissement = perte de traçabilité.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : le module Tasks donne un comptage global sans visualiser les goulots d'étranglement du processus métier.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Identifie exactement où les inspections «&nbsp;disparaissent&nbsp;» avant d'aboutir à un travaux programmé.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Taux de conversion affiché entre chaque étape — KPI opérationnel pour les chefs de projet.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format simple série ordonnée — calculable par agrégation des statuts Tasks déjà présents en base.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>À quelle étape du processus perd-on le plus de tronçons inspectés avant qu'ils aboutissent à des travaux&nbsp;?</li>
+              <li>Quel est le taux de transformation global de l'identification terrain à la programmation budgétaire&nbsp;?</li>
+              <li>Les délais de validation administrative créent-ils un goulot d'étranglement mesurable&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> Chaque bande horizontale = une étape du processus. Le rétrécissement entre deux bandes = taux de perte à cette étape. Le pourcentage affiché = taux de passage. Une forte chute en une seule étape = goulot d'étranglement opérationnel à investiguer.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-funnel" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-funnel','Funnel-Pipeline-Inspection')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-funnel"></pre></details>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /sec 05 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? SECTION 06 �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="sec">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div><div class="sec-title">Comparaison multi-dimensions</div></div>
+    </div>
+    <p class="sec-sub">Comparer simultanément plusieurs territoires sur plusieurs critères — détecter les profils atypiques</p>
+    <div class="grid">
+
+      <!-- PARALLEL -->
+      <div class="card">
+        <div class="card-accent accent-cyan"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-cyan">PARALLEL</span>
+            <span class="b-mod">analysis</span>
+            <span class="b-mod">engines</span>
+          </div>
+          <h3>Coordonnées parallèles — profil multi-indicateurs des territoires</h3>
+          <div class="card-desc">
+            <p>Chaque ligne = un territoire. Chaque axe vertical = un indicateur (IRI, dégradations, inspection, budget, âge revêtement). Croiser les lignes = corrélations inverses.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : comparer 5 indicateurs sur 12 territoires nécessite 5 graphiques séparés — les patterns cross-indicateurs sont invisibles.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Filtre interactif sur chaque axe&nbsp;: «&nbsp;Montrez-moi les communes avec IRI &lt; 50 ET budget &gt; 70&nbsp;».</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Détecte les profils paradoxaux&nbsp;: bon budget mais mauvais IRI = problème de ciblage.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format multi-items existant — axes = keys du payload, lignes = items.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-parallel" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-parallel','Parallel-Coordonnees-Profil')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-parallel"></pre></details>
+        </div>
+      </div>
+
+      <!-- NIGHTINGALE -->
+      <div class="card">
+        <div class="card-accent accent-rose"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="b-type btype-rose">NIGHTINGALE</span>
+            <span class="b-mod">analysis</span>
+            <span class="b-mod">reportings</span>
+          </div>
+          <h3>Distribution des types de dégradation par fréquence</h3>
+          <div class="card-desc">
+            <p>Rose des vents (camembert à rayons variables)&nbsp;: chaque secteur = un type de dégradation, le rayon = la fréquence, la couleur = la sévérité.</p>
+            <ul>
+              <li class="li-problem"><span class="ico">⚠</span><span>Actuellement : un HBAR des types de dégradation est lisible mais ne permet pas de comparer simultanément plusieurs territoires sur la même vue.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>La forme globale révèle le «&nbsp;profil de dégradation&nbsp;» d'un territoire — deux roses identiques = mêmes problèmes structurels.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Plus impactant visuellement qu'un camembert simple pour les présentations élus.</span></li>
+              <li class="li-good"><span class="ico">✓</span><span>Format single-item existant avec keys = types de dégradations — aucun changement backend.</span></li>
+            </ul>
+          </div>
+          <div class="card-questions">
+            <div class="cq-label">Questions auxquelles ce graphique répond</div>
+            <ul>
+              <li>Quel type de dégradation est le plus fréquent sur ce territoire&nbsp;?</li>
+              <li>La répartition est-elle homogène ou dominée par 1-2 pathologies structurelles récurrentes&nbsp;?</li>
+              <li>En comparant deux territoires côte à côte, ont-ils le même profil de dégradation ou des problèmes différents&nbsp;?</li>
+            </ul>
+          </div>
+          <div class="card-howto">
+            <span class="howto-icon">👁</span>
+            <span><strong>Comment lire&nbsp;:</strong> L'angle de chaque secteur = fréquence relative. Le rayon = volume absolu. Un secteur qui s'étire vers l'extérieur = pathologie surreprésentée. Deux roses de forme similaire = territoires avec les mêmes problèmes structurels — utile pour benchmarker.</span>
+          </div>
+        </div>
+        <div class="cw-wrap">
+          <div id="chart-nightingale" class="cw cw-tall"></div>
+          <button class="btn-export" onclick="exportChart('chart-nightingale','Nightingale-Types-Degradation')">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Exporter PNG
+          </button>
+        </div>
+        <div class="card-payload">
+          <details><summary>Payload backend</summary><pre id="payload-nightingale"></pre></details>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /sec 06 -->
+
+  <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? FOOTER �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
+  <div class="footer">
+    <div class="footer-head">
+      <h2>Intégration technique — TypeViz enum &amp; effort estimé</h2>
+      <p>Les nouveaux types à ajouter dans <code style="color:var(--violet);font-size:12px">factory.ts</code> (enum TypeViz) et estimation de l'effort d'intégration frontend/backend</p>
+    </div>
+    <div class="typeviz-code">
+enum TypeViz {
+  // Existants
+  VBAR, HBAR, MULTI_VBAR, MULTI_HBAR, MULTI_RADAR, MULTI_LINE,
+  MULTI_TABLE, WATERFALL, RADIAL, TABLE, VAR_TABLE, TEXT, COMMENT,
+  // ──── Nouveaux proposés ────────────────────────────────────────────────
+  SCATTER,      // format multi-items existant ✓
+  HEATMAP,      // format multi-items existant + normalisation ✓
+  STACKED_AREA, // format multi-items existant ✓
+  CALENDAR,     // format uid=date ISO + d=count  — nouveau endpoint léger
+  TREEMAP,      // format multi-items + children  — nouveau endpoint backend
+  SUNBURST,     // format hiérarchique multi-niveaux — nouveau endpoint backend
+  BOXPLOT,      // d: [min,q1,med,q3,max] — calcul côté serveur
+  GAUGE,        // format single-item existant ✓
+  SANKEY,       // format nœuds + liens — nouveau endpoint léger
+  FUNNEL,       // format série ordonnée simple — calculable depuis Tasks
+  PARALLEL,     // format multi-items existant ✓
+  NIGHTINGALE,  // format single-item existant ✓
+}
+    </div>
+    <table class="effort-table">
+      <thead><tr><th>TypeViz</th><th>Module cible</th><th>Format backend</th><th>Effort</th></tr></thead>
+      <tbody>
+        <tr><td>SCATTER</td><td>analysis, engines</td><td>Multi-items existant</td><td class="e-low">Faible — 0 backend</td></tr>
+        <tr><td>HEATMAP</td><td>analysis, reportings</td><td>Multi-items + normalisation</td><td class="e-low">Faible — normalisation frontend</td></tr>
+        <tr><td>STACKED_AREA</td><td>reportings, analysis</td><td>Multi-items existant</td><td class="e-low">Faible — 0 backend</td></tr>
+        <tr><td>GAUGE</td><td>homepage, dashboard</td><td>Single-item existant</td><td class="e-low">Faible — format existant</td></tr>
+        <tr><td>PARALLEL</td><td>analysis, engines</td><td>Multi-items existant</td><td class="e-low">Faible — 0 backend</td></tr>
+        <tr><td>NIGHTINGALE</td><td>analysis, reportings</td><td>Single-item existant</td><td class="e-low">Faible — 0 backend</td></tr>
+        <tr><td>CALENDAR</td><td>tasks, data-importer</td><td>uid=date ISO, d=count</td><td class="e-med">Moyen — nouveau endpoint Tasks</td></tr>
+        <tr><td>BOXPLOT</td><td>analysis, engines</td><td>d: [min,q1,med,q3,max]</td><td class="e-med">Moyen — calcul stats côté serveur</td></tr>
+        <tr><td>FUNNEL</td><td>tasks, data-importer</td><td>Série ordonnée {étape, valeur}</td><td class="e-med">Moyen — agrégation statuts Tasks</td></tr>
+        <tr><td>SANKEY</td><td>reportings, analysis</td><td>Nœuds + liens {source, target, value}</td><td class="e-med">Moyen — agrégation données budget</td></tr>
+        <tr><td>TREEMAP</td><td>reportings, analysis</td><td>Multi-items + children imbriqués</td><td class="e-high">Élevé — nouveau endpoint hiérarchique</td></tr>
+        <tr><td>SUNBURST</td><td>map-viewer, analysis</td><td>Hiérarchie multi-niveaux récursive</td><td class="e-high">Élevé — requête récursive backend</td></tr>
+      </tbody>
+    </table>
+    <div class="footer-note">
+      <strong>Note d'implémentation&nbsp;:</strong> les 6 graphiques à effort faible (SCATTER, HEATMAP, STACKED_AREA, GAUGE, PARALLEL, NIGHTINGALE) réutilisent le shape
+      <code style="color:#7dd3fc;font-size:11px">{ keys, items: [{ uid, name, data: { [key]: { d, title, color, formatters } } }] }</code>
+      déjà normalisé par <strong>report-indicator-graph.tsx</strong> — aucun changement backend requis. 
+      Pour CALENDAR, BOXPLOT et FUNNEL, un champ ou endpoint supplémentaire léger suffit. TREEMAP et SUNBURST nécessitent un champ <code style="color:#7dd3fc;font-size:11px">children</code> dans les items côté API.
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script src="./new-charts-proposal.js"></script>
+</body>
+</html>

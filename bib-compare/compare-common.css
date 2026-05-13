@@ -1,0 +1,123 @@
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #dfe5ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background:
+    radial-gradient(1200px 420px at 10% -5%, #e7eefc 0%, transparent 60%),
+    radial-gradient(1000px 360px at 100% 0%, #e9f7ee 0%, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.sub {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.links a {
+  color: #0b5fff;
+  text-decoration: none;
+  border: 1px solid #bfd0fb;
+  background: #f3f7ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.chart-wrap {
+  width: 100%;
+  height: 360px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+pre {
+  margin-top: 14px;
+  background: #0f172a;
+  color: #dbeafe;
+  border-radius: 10px;
+  padding: 12px;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.note strong {
+  color: #1f2937;
+}
+
+.explain {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid #dbe5f4;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.explain p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.explain p + p {
+  margin-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .chart-wrap {
+    height: 320px;
+  }
+}

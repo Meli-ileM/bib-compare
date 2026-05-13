@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparaison HBar D3 vs ECharts</title>
+  <link rel="stylesheet" href="./compare-common.css" />
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --value: #2563eb;
+      --reference: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .chart-wrap {
+      width: 100%;
+      height: 300px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .d-value { background: var(--value); }
+    .d-reference { background: var(--reference); }
+
+    pre {
+      margin-top: 16px;
+      background: #0b1020;
+      color: #d6defa;
+      border-radius: 10px;
+      padding: 12px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>HBar: D3 plateforme vs ECharts</h1>
+  <p class="sub">Même payload d'entrée backend-like, même logique de calcul, rendu D3 fidèle au composant plateforme et variante ECharts en parité visuelle.</p>
+
+  <div class="explain">
+    <p><strong>Cas d'usage:</strong> comparer rapidement un indicateur unique avec valeur, reference et eventuel delta negatif.</p>
+    <p><strong>Donnees:</strong> objet single tuple avec item.keys et item.data[cle].d, color, formatters.</p>
+  </div>
+
+  <div class="links">
+    <a href="./compare-index.html">INDEX</a>
+    <a href="./hbar-compare.html">HBAR</a>
+    <a href="./vbar-compare.html">VBAR</a>
+    <a href="./multi-vbar-compare.html">MULTI_VBAR</a>
+    <a href="./multi-hbar-compare.html">MULTI_HBAR</a>
+    <a href="./multi-line-compare.html">MULTI_LINE</a>
+    <a href="./multi-radar-compare.html">MULTI_RADAR</a>
+    <a href="./waterfall-compare.html">WATERFALL</a>
+    <a href="./radial-compare.html">RADIAL</a>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>D3 HBar (logique exacte du composant plateforme)</h2>
+      <div id="d3Chart" class="chart-wrap"></div>
+      <div class="legend">
+        <span><span class="dot d-value"></span>value</span>
+        <span><span class="dot d-reference"></span>reference</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>ECharts HBar (même logique, autre moteur de rendu)</h2>
+      <div id="echartsChart" class="chart-wrap"></div>
+      <div class="legend">
+        <span><span class="dot d-value"></span>value</span>
+        <span><span class="dot d-reference"></span>reference</span>
+      </div>
+    </section>
+  </div>
+
+  <pre id="payload"></pre>
+  <p class="note"><strong>Reference:</strong> cette page sert de baseline visuelle pour les autres comparaisons.</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="./hbar-compare.js"></script>
+</body>
+</html>

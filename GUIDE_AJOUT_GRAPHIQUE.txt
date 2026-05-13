@@ -1,0 +1,458 @@
+================================================================================
+     GUIDE TECHNIQUE — AJOUTER UN NOUVEAU GRAPHIQUE DANS LES RAPPORTS
+                  Scénario : Ajout d'un "Bubble Chart" (nuage de bulles)
+                         Date : 03 mai 2026
+================================================================================
+
+Ce document explique pas à pas, avec le vrai code du projet, comment les
+fichiers sont liés entre eux et ce qu'il faut modifier pour ajouter un nouveau
+type de graphique dans le rapport d'analyse.
+
+
+================================================================================
+  VUE D'ENSEMBLE — LE CIRCUIT COMPLET D'UN GRAPHIQUE
+================================================================================
+
+Voici le chemin complet qu'emprunte une donnée pour aller de la base de données
+jusqu'à l'écran, en passant par le graphique :
+
+  [Base de données PostgreSQL]
+         │
+         │  report_template.type_viz = "bubble"   ← valeur stockée en BDD
+         │
+         ▼
+  [Backend : report-template.ts]
+         │  typeViz: string  → transmis via l'API REST
+         │
+         ▼
+  [Frontend : report-indicator-graph.tsx]
+         │  renderIndicatorGraph()
+         │       └─► graphTypeForItem(reportLayout)
+         │                └─► graphForType(item.typeVizComputed)
+         │
+         ▼
+  [Frontend : factory.ts]
+         │  graphForType("bubble")
+         │       └─► case TypeViz.BUBBLE: return BubbleChart
+         │
+         ▼
+  [Frontend : bubble-chart.tsx]  ← le composant que tu crées
+         │  Mixins(VizMixin, VizSingleTupleMixin, VizWithTooltipOfItemsMixin)
+         │       └─► draw()  →  rendu D3.js dans un SVG
+         │
+         ▼
+  [Navigateur : SVG affiché dans le rapport]
+
+
+================================================================================
+  ÉTAPE 0 — COMPRENDRE LES MIXINS (base technique)
+================================================================================
+
+Fichier : gme-front-master/src/lib/charts/mixins/viz-mixin.tsx
+
+Tous les graphiques héritent de ces classes :
+
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │  ResizableMixin                                                         │
+  │    └── Observe le resize du conteneur (ResizeObserver)                 │
+  │    └── Appelle onResize() quand la taille change                       │
+  │                                                                         │
+  │  VizMixin  (hérite de ResizableMixin)                                  │
+  │    └── Rendu SVG de base :  render() { return <svg>{ draw() }</svg> }  │
+  │    └── Calcule innerSize (largeur/hauteur disponibles)                 │
+  │    └── Gère drawable: boolean (vrai quand le DOM est monté)            │
+  │    └── Tu DOIS implémenter : draw() { return <g>...</g> }              │
+  │                                                                         │
+  │  VizSingleTupleMixin  (pour 1 seule série de données)                  │
+  │    └── @Prop data: { item: { keys, data, uid } }                       │
+  │    └── Donne accès à : this.item, this.abscissKeys                     │
+  │    └── À utiliser pour : vbar, hbar, radial, text                      │
+  │                                                                         │
+  │  VizMultiTuplesMixin  (pour plusieurs séries / territoires)            │
+  │    └── @Prop data: { items: [...], formatSuffix }                      │
+  │    └── Donne accès à : this.data.items, this.flatTuples, this.abscissKeys│
+  │    └── À utiliser pour : multi-line, multi-vbar, multi-hbar, radar     │
+  │                                                                         │
+  │  VizWithTooltipOfItemsMixin                                             │
+  │    └── Méthode drawTooltip({item, props}) → rendu du tooltip au survol │
+  └─────────────────────────────────────────────────────────────────────────┘
+
+STRUCTURE D'UNE DONNÉE (this.item ou this.data.items[i]) :
+
+  {
+    uid: "abc-123",           // identifiant unique du template
+    name: "Population 25-35", // nom affiché dans le tooltip
+    keys: ["value", "reference"],  // quelles séries sont actives
+    data: {
+      value: {
+        d: 0.42,              // la valeur brute (entre 0 et 1 ou chiffre réel)
+        formatters: [...],    // fonctions de formatage
+        color: "#3498db",     // couleur configurée dans le template
+        style: {
+          fill: {
+            default: "#3498db",
+            rules: [...]
+          }
+        }
+      },
+      reference: {
+        d: 0.38,
+        ...
+      }
+    }
+  }
+
+
+================================================================================
+  ÉTAPE 1 — CRÉER LE COMPOSANT GRAPHIQUE
+================================================================================
+
+Fichier à créer :
+  gme-front-master/src/components/charts/bubble-chart.tsx
+
+--- CODE COMMENTÉ (basé sur la structure réelle de radial.tsx) ---
+
+  import { Component, Mixins } from 'vue-property-decorator';
+  import { scaleLinear, scaleSqrt } from "d3-scale";
+  import VizMixin, {
+    VizSingleTupleMixin,
+    VizWithTooltipOfItemsMixin
+  } from '~/lib/charts/mixins/viz-mixin';
+  import { classBrewer } from '~/lib/charts/globals';
+  import { buildConverter } from '~/lib/helpers/formatter';
+  import { DEFAULT_POPPER_OPTIONS } from '~/lib/popper';
+
+  @Component
+  export default class BubbleChart extends Mixins(
+    VizMixin,                      // ← rendu SVG de base, innerSize, margin
+    VizSingleTupleMixin,           // ← donne accès à this.item et this.abscissKeys
+    VizWithTooltipOfItemsMixin     // ← donne accès à this.drawTooltip()
+  ) {
+
+    // VizMixin EXIGE que tu définisses les marges
+    get margin() {
+      return { t: 20, b: 20, r: 20, l: 20 };
+    }
+
+    // VizMixin EXIGE que tu implémentes draw()
+    // C'est ici que tout le rendu D3 se passe
+    draw() {
+      const { width, height } = this.innerSize; // taille disponible (marges déduites)
+      const dOrd = this.abscissKeys;            // ex: ["value", "reference"]
+
+      // Échelle pour positionner les bulles
+      const sX = scaleLinear()
+        .domain([0, dOrd.length])
+        .range([0, width]);
+
+      // Échelle pour la taille des bulles (racine carrée pour respecter les aires)
+      const sR = scaleSqrt()
+        .domain([0, 1])
+        .range([5, Math.min(width, height) / 3]);
+
+      return (
+        <g class="bubble-chart"
+          transform={`translate(${this.margin.l}, ${this.margin.t})`}
+          v-cssVars={this.getCssVars()}    // applique les couleurs CSS du template
+        >
+          {dOrd.map((k, i) => {
+            const itm = this.item.data[k];  // données pour cette série
+            const r = sR(itm.d ?? 0);
+            const cx = sX(i + 0.5);
+            const cy = height / 2;
+
+            return (
+              <g
+                class={`bubble ${classBrewer(k, itm)}`}  // classe CSS de couleur
+                v-popper={{
+                  tooltip: this.drawTooltip({ item: this.item, props: [k] }),
+                  options: { ...DEFAULT_POPPER_OPTIONS, placement: "top" }
+                }}
+              >
+                <circle cx={cx} cy={cy} r={r} class="bubble-circle" />
+                <text x={cx} y={cy} text-anchor="middle" dominant-baseline="middle">
+                  {buildConverter(itm)(itm.d)}
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      );
+    }
+  }
+
+--- POURQUOI CE CODE FONCTIONNE ---
+
+  ✔ Mixins(VizMixin, ...)
+      → VizMixin.render() appelle this.draw() et l'enveloppe dans un <svg>
+      → Tu n'as JAMAIS à écrire render() toi-même, seulement draw()
+
+  ✔ this.innerSize
+      → Calculé automatiquement : contentRect - margin
+      → Se met à jour quand l'utilisateur redimensionne la fenêtre (ResizableMixin)
+
+  ✔ VizSingleTupleMixin
+      → Injecte @Prop data en entrée
+      → this.item = data.item
+      → this.abscissKeys = ["value"] ou ["value", "reference"] selon la config
+
+  ✔ classBrewer(k, itm)
+      → Retourne une classe CSS ("of-value", "of-reference") qui applique la
+        couleur configurée dans le template via CSS variables
+
+  ✔ v-cssVars={this.getCssVars()}
+      → Injecte --color-chart-of-value et --color-chart-of-reference
+        dans le scope CSS du composant
+
+
+================================================================================
+  ÉTAPE 2 — ENREGISTRER DANS LA FACTORY
+================================================================================
+
+Fichier : gme-front-master/src/components/charts/factory.ts
+
+--- AVANT ---
+
+  import WaterfallChart from "./waterfall-chart";
+
+  export enum TypeViz {
+    VBAR = 'vbar',
+    HBAR = 'hbar',
+    ...
+    COMMENT = 'comment',
+  }
+
+  export function graphForType(type: TypeViz) {
+    switch (type) {
+      case TypeViz.VBAR: return VBarChart;
+      ...
+      default:
+        console.error(`graphForType : Unknown graph type viz ${type}`);
+        return null;
+    }
+  }
+
+--- APRÈS (les 2 modifications à faire) ---
+
+  import WaterfallChart from "./waterfall-chart";
+  import BubbleChart from "./bubble-chart";        // ← AJOUT 1 : import
+
+  export enum TypeViz {
+    VBAR = 'vbar',
+    HBAR = 'hbar',
+    ...
+    COMMENT = 'comment',
+    BUBBLE = 'bubble',                              // ← AJOUT 2 : valeur enum
+  }
+
+  export function graphForType(type: TypeViz) {
+    switch (type) {
+      case TypeViz.VBAR: return VBarChart;
+      ...
+      case TypeViz.BUBBLE: return BubbleChart;      // ← AJOUT 3 : case dans le switch
+      default:
+        console.error(`graphForType : Unknown graph type viz ${type}`);
+        return null;
+    }
+  }
+
+--- POURQUOI C'EST SUFFISANT ---
+
+  La fonction graphForType() est appelée directement dans report-indicator-graph.tsx :
+
+    protected graphTypeForItem(item: AnalysisReportLayout) {
+      let Comp = graphForType(item.typeVizComputed);   // ← lit le typeViz du rapport
+      return <Comp
+        data={this.normalizeReportLayout(item)}        // ← prépare les données
+        selectedItem={...}
+        onItemClick={this.onItemSelection}
+      />;
+    }
+
+  Quand typeVizComputed vaut "bubble", graphForType retourne BubbleChart,
+  et Vue instancie le composant avec les données du rapport.
+
+
+================================================================================
+  ÉTAPE 3 — LIER L'OPTION DANS L'INTERFACE D'ÉDITION (template)
+================================================================================
+
+Pour que l'utilisateur puisse sélectionner "Bubble Chart" dans l'interface,
+il faut trouver où est rendu le sélecteur de type de visualisation.
+
+Le template d'analyse est configuré via un composant "AppConfigurator".
+Le champ typeViz est probablement dans l'éditeur de template.
+
+Fichiers à investiguer :
+  gme-front-master/src/modules/analysis/components/app-configurator/
+  gme-front-master/src/modules/analysis/components/templates-list/
+
+Dans le composant qui liste les types disponibles, tu ajouras une entrée :
+
+  --- EXEMPLE GÉNÉRIQUE ---
+
+  const VIZ_OPTIONS = [
+    { value: TypeViz.VBAR,        label: 'Barres verticales' },
+    { value: TypeViz.HBAR,        label: 'Barres horizontales' },
+    { value: TypeViz.MULTI_LINE,  label: 'Courbes' },
+    { value: TypeViz.RADIAL,      label: 'Donut' },
+    { value: TypeViz.BUBBLE,      label: 'Bulles' },    // ← AJOUT
+    ...
+  ];
+
+  Ce tableau alimente un composant <select> ou un sélecteur custom
+  qui met à jour la propriété typeViz du ReportTemplate.
+
+
+================================================================================
+  ÉTAPE 4 — CÔTÉ BACKEND (aucune migration nécessaire)
+================================================================================
+
+Fichier : gme-server-app-master/src/modules/analysis/models/report-template.ts
+
+  @Entity({ name: "report_template", schema: "gms_app" })
+  export default class ReportTemplate {
+
+    @Column({ name: "type_viz", nullable: true })
+    public typeViz: string;    // ← c'est un string libre, pas un enum en BDD
+
+    ...
+  }
+
+La valeur "bubble" sera stockée telle quelle dans la colonne type_viz.
+Aucune migration SQL n'est nécessaire.
+
+Le backend transmet simplement la valeur au frontend via l'API REST.
+Le frontend utilise cette valeur dans graphForType() pour choisir le composant.
+
+
+================================================================================
+  RÉCAPITULATIF DES LIAISONS (schéma de flux)
+================================================================================
+
+  Utilisateur crée un rapport → choisit "Bubble Chart" dans l'UI
+         │
+         ▼
+  [AppConfigurator / template editor]
+    typeViz = "bubble"  → envoyé en POST /api/report-template
+         │
+         ▼
+  [BDD PostgreSQL]
+    report_template.type_viz = "bubble"
+         │
+         ▼
+  [API GET /api/report-template/:id]
+    { typeViz: "bubble", ... }
+         │
+         ▼
+  [Vuex store - analysis]
+    currentTemplate.reports[i].typeViz = "bubble"
+         │
+         ▼
+  [AnalysisReportLayout.typeVizComputed]
+    retourne "bubble"
+         │
+         ▼
+  [report-indicator-graph.tsx]
+    graphTypeForItem(layout)
+      └─► graphForType("bubble")
+         │
+         ▼
+  [factory.ts]
+    case TypeViz.BUBBLE: return BubbleChart
+         │
+         ▼
+  [bubble-chart.tsx]
+    Mixins(VizMixin, VizSingleTupleMixin, ...)
+    draw() → <g class="bubble-chart">...</g>
+         │
+         ▼
+  [VizMixin.render()]
+    return <svg>{ draw() }</svg>
+         │
+         ▼
+  [DOM navigateur]
+    Le graphique bulle est affiché dans le rapport
+
+
+================================================================================
+  COMPARAISON DES 3 PATTERNS EXISTANTS (choisir le bon pour ton cas)
+================================================================================
+
+  Cas 1 : Valeur UNIQUE par indicateur (ex: une seule zone géographique)
+  -----------------------------------------------------------------------
+  Utiliser : VizSingleTupleMixin
+  Exemple  : radial.tsx, vbar-chart.tsx, text.tsx
+
+  this.item = {
+    name: "Île-de-France",
+    keys: ["value", "reference"],
+    data: { value: { d: 0.42 }, reference: { d: 0.38 } }
+  }
+
+  Accès aux données : this.item.data["value"].d
+                      this.item.data["reference"].d
+
+
+  Cas 2 : PLUSIEURS zones géographiques comparées
+  -----------------------------------------------------------------------
+  Utiliser : VizMultiTuplesMixin
+  Exemple  : multi-line-chart.tsx, multi-vbar-chart.tsx
+
+  this.data.items = [
+    { name: "Paris", keys: ["value"], data: { value: { d: 0.6 } } },
+    { name: "Lyon",  keys: ["value"], data: { value: { d: 0.4 } } },
+    { name: "Lille", keys: ["value"], data: { value: { d: 0.3 } } },
+  ]
+
+  Accès aux données : this.data.items.map(item => item.data["value"].d)
+  Accès aux min/max : this.flatTuples  (tableau plat de toutes les valeurs)
+
+
+  Cas 3 : Tableau de données
+  -----------------------------------------------------------------------
+  Cas particulier → voir table-chart.tsx
+  Reçoit des props supplémentaires : tableType, customColumns
+
+
+================================================================================
+  ERREURS COURANTES ET SOLUTIONS
+================================================================================
+
+  PROBLÈME : Le graphique ne s'affiche pas, console log "Unknown graph type"
+  SOLUTION  : Vérifier que la valeur ajoutée dans TypeViz correspond EXACTEMENT
+              à ce qui est stocké en BDD (ex: 'bubble' != 'Bubble')
+
+  PROBLÈME : draw() est appelé mais le SVG est vide
+  SOLUTION  : Vérifier que drawable vaut true (VizMixin attend mounted())
+              et que contentRect n'est pas null
+
+  PROBLÈME : Les couleurs ne s'appliquent pas
+  SOLUTION  : Ajouter v-cssVars={this.getCssVars()} sur le <g> racine
+              et utiliser class={classBrewer(k, itm)} sur les éléments
+
+  PROBLÈME : Le tooltip ne s'affiche pas
+  SOLUTION  : Ajouter VizWithTooltipOfItemsMixin dans les Mixins
+              et utiliser v-popper={{ tooltip: this.drawTooltip({...}) }}
+
+  PROBLÈME : Le graphique ne se redimensionne pas avec la fenêtre
+  SOLUTION  : C'est géré automatiquement par ResizableMixin (inclus dans VizMixin)
+              Utiliser this.innerSize (pas de valeurs fixes en pixels)
+
+
+================================================================================
+  FICHIERS À MODIFIER — RÉSUMÉ FINAL
+================================================================================
+
+  N°  | Fichier                                           | Action
+  ----|---------------------------------------------------|------------------
+  1   | src/components/charts/bubble-chart.tsx            | CRÉER (nouveau)
+  2   | src/components/charts/factory.ts                  | MODIFIER (3 lignes)
+  3   | src/modules/analysis/components/app-configurator/ | MODIFIER (UI)
+      | (ou le composant qui gère la liste des typeViz)   |
+  4   | gme-server-app-master (backend)                   | RIEN à faire
+
+
+================================================================================
+                              FIN DU GUIDE
+================================================================================

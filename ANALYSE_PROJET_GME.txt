@@ -1,0 +1,348 @@
+================================================================================
+          RAPPORT D'ANALYSE — PROJET GME (Global Map Experience)
+                         Date : 03 mai 2026
+================================================================================
+
+
+================================================================================
+1. PRÉSENTATION DU PROJET
+================================================================================
+
+GME — Global Map Experience est une plateforme d'analyse géospatiale et de
+reporting commercial à destination des entreprises. Elle permet de :
+
+  - Analyser des zones géographiques (zones de chalandise, implantations,
+    flux migratoires, sectorisation, etc.)
+  - Créer des rapports visuels avec des indicateurs, graphiques et tableaux
+    comparatifs
+  - Visualiser des données sur des cartes interactives (MapLibre GL + Turf.js)
+  - Importer, éditer et gérer des jeux de données (CSV, XLSX, connecteurs)
+  - Exporter les résultats en PDF, XLSX, CSV, PNG
+  - Gérer les accès utilisateurs, quotas, abonnements (Stripe), licences clients
+
+
+================================================================================
+2. ARCHITECTURE GÉNÉRALE
+================================================================================
+
+Le projet est divisé en deux applications :
+
+  ┌─────────────────────────────────────────────────────────────────────────┐
+  │                          GME Platform                                   │
+  ├──────────────────────────────┬──────────────────────────────────────────┤
+  │     gme-front-master         │        gme-server-app-master             │
+  │     Vue.js 2 + TypeScript    │        Node.js + Hapi.js + TypeScript    │
+  │     Webpack + SASS           │        PostgreSQL + TypeORM              │
+  │     D3.js + MapLibre GL      │        Redis + Cassandra                 │
+  └──────────────────────────────┴──────────────────────────────────────────┘
+
+
+================================================================================
+3. STACK TECHNIQUE
+================================================================================
+
+--- FRONTEND (gme-front-master) ---
+
+  - Vue.js 2        : Framework JavaScript (avec vue-class-component / vue-property-decorator)
+  - TypeScript      : Typage statique
+  - D3.js           : Rendu SVG de tous les graphiques
+  - MapLibre GL     : Cartes interactives
+  - Turf.js         : Opérations géospatiales (calculs de zones, distances...)
+  - Vuex            : Gestion d'état centralisée
+  - html2canvas     : Export PNG / PDF (capture du DOM)
+  - canvg           : Conversion SVG pour export
+  - ExcelJS         : Export XLSX
+  - Webpack         : Bundler avec hot-reload
+
+--- BACKEND (gme-server-app-master) ---
+
+  - Node.js 16+     : Runtime JavaScript côté serveur
+  - Hapi.js         : Framework HTTP
+  - TypeORM         : ORM pour PostgreSQL
+  - PostgreSQL       : Base de données relationnelle
+  - Redis           : Cache
+  - Cassandra       : Données séries temporelles (footfall)
+  - Système de migrations SQL
+
+
+================================================================================
+4. MODULES FONCTIONNELS
+================================================================================
+
+--- 26 MODULES FRONTEND ---
+
+  Module              | Rôle
+  --------------------|-------------------------------------------------------
+  analysis            | Cœur de la plateforme — analyse, rapport, carte
+  reportings          | Gestion des reportings commerciaux
+  datasets            | Import et gestion des jeux de données
+  maps                | Éditeur et visualiseur de cartes
+  template-editor     | Édition des templates d'analyse
+  data-edition        | Édition de données en ligne
+  data-importer       | Import de fichiers externes
+  users               | Gestion des utilisateurs
+  clients             | Gestion des clients
+  acl                 | Contrôle d'accès (Access Control List)
+  functionalities     | Gestion des fonctionnalités par client
+  customisation       | Personnalisation de l'interface
+  auth                | Authentification
+  geometries          | Gestion des géométries
+  notifications       | Système de notifications
+  share               | Partage de contenus
+  groups              | Groupes d'utilisateurs
+  homepage            | Page d'accueil
+  medias              | Gestion des médias
+  modales             | Composants modaux partagés
+  quotas              | Gestion des quotas
+  favorites           | Favoris
+  help                | Aide en ligne
+  tasks               | Suivi des tâches asynchrones
+  map-viewer          | Visualiseur de carte en lecture seule
+  ui                  | Composants d'interface génériques
+
+
+--- MOTEURS D'ANALYSE DISPONIBLES ---
+
+  Moteur              | Description
+  --------------------|-------------------------------------------------------
+  reporting           | Rapports avec indicateurs et graphiques
+  implanting          | Analyse d'implantation commerciale (v1)
+  implantingV2        | Analyse d'implantation commerciale (v2)
+  prdt                | Potentiel de recrutement de détail
+  prdt-api            | Version API du moteur PRDT
+  footfall            | Comptage et analyse de flux piétons
+  carte-scolaire      | Analyse de sectorisation scolaire
+  sectorization       | Sectorisation commerciale
+  relocation          | Analyse de délocalisation
+  cdta                | Analyse CDTA
+  mig-flow            | Flux migratoires
+  simouv              | Simulation d'ouverture
+
+
+================================================================================
+5. FICHIERS CONCERNÉS POUR AJOUTER DES FORMES DE REPRÉSENTATION
+================================================================================
+
+--- A. FICHIER CENTRAL — REGISTRE DES TYPES DE GRAPHIQUES ---
+
+  Fichier : gme-front-master/src/components/charts/factory.ts
+  Rôle    : Déclare l'enum TypeViz et la fonction graphForType().
+            C'est LE point d'entrée pour enregistrer un nouveau type de graphique.
+
+
+--- B. COMPOSANTS GRAPHIQUES EXISTANTS (modèles à suivre) ---
+
+  Répertoire : gme-front-master/src/components/charts/
+
+  Fichier                         | Type de graphique
+  --------------------------------|------------------------------------------
+  vbar-chart.tsx                  | Barres verticales simples
+  hbar-chart.tsx                  | Barres horizontales simples
+  multi-vbar-chart.tsx            | Barres verticales multi-séries
+  multi-hbar-chart.tsx            | Barres horizontales multi-séries
+  multi-line-chart.tsx            | Courbes multi-séries (évolution temporelle)
+  multi-radar-chart.tsx           | Graphique radar / araignée
+  waterfall-chart.tsx             | Graphique en cascade (waterfall)
+  radial.tsx                      | Donut / radial (répartition)
+  table-chart.tsx                 | Tableau de données
+  variable-table-chart.tsx        | Tableau avec variables
+  column-variable-table-chart.tsx | Tableau colonnes dynamiques
+  text.tsx                        | Affichage KPI / valeur unique
+
+
+--- C. MIXINS D3 — BASE TECHNIQUE DE TOUS LES GRAPHIQUES ---
+
+  Répertoire : gme-front-master/src/lib/charts/mixins/
+
+  Fichier                | Rôle
+  -----------------------|---------------------------------------------------
+  viz-mixin.tsx          | Mixin de base — rendu D3.js, resize, tooltips,
+                         | événements itemClick, VizSingleTupleMixin,
+                         | VizMultiTuplesMixin, CssVarsMixin
+  chart-mixin.tsx        | Mixin pour axes et dimensions SVG
+  resizable-mixin.tsx    | Adaptation automatique à la taille du conteneur
+
+
+--- D. COMPOSANT D'INTÉGRATION DANS LE RAPPORT ---
+
+  Fichier : gme-front-master/src/modules/analysis/components/report-indicator-graph.tsx
+  Rôle    : Sélectionne et rend le bon composant graphique selon le typeViz
+            défini dans le template. C'est ici que la liaison est faite entre
+            les données du rapport et le composant de visualisation.
+
+
+--- E. AUTRES COMPOSANTS DU RAPPORT ---
+
+  Fichier                                                           | Rôle
+  ------------------------------------------------------------------|---------------
+  src/modules/analysis/components/report-table.tsx                 | Tableaux avec export
+  src/modules/analysis/components/report-map-player.tsx            | Rapport cartographique
+  src/modules/analysis/components/report-benchmark/               | Rapports benchmark
+  src/modules/analysis/components/modals/report-export-modal.tsx  | Export (PDF, XLSX, CSV)
+
+
+--- F. CÔTÉ BACKEND — MODÈLE DE DONNÉES ---
+
+  Fichier : gme-server-app-master/src/modules/analysis/models/report-template.ts
+  Rôle    : Entité BDD — contient le champ typeViz: string qui stocke
+            le type de graphique choisi pour chaque rapport.
+
+  Fichier : gme-server-app-master/src/modules/analysis/models/report-template-pattern.ts
+  Rôle    : Patron / modèle de template de rapport.
+
+
+================================================================================
+6. SYSTÈME DE VISUALISATION — ARCHITECTURE DÉTAILLÉE
+================================================================================
+
+Le système suit un pattern Factory + Composition de Mixins :
+
+  ReportTemplate (BDD)
+      └── typeViz: string  (ex: "vbar", "multi-line", ...)
+             │
+             ▼
+  report-indicator-graph.tsx
+      └── graphForType(typeViz)   ←   factory.ts
+             │
+             ▼
+  Composant Vue + D3 (ex: MultiLineChart)
+      ├── VizMixin              (rendu D3, resize, interactions)
+      ├── VizSingleTupleMixin   (données mono-territoire)
+      │   OU
+      │   VizMultiTuplesMixin   (données multi-territoires)
+      └── CssVarsMixin          (couleurs via CSS variables)
+
+
+--- TYPES DE VISUALISATION ACTUELLEMENT DISPONIBLES ---
+
+  TypeViz         | Composant              | Usage typique
+  ----------------|------------------------|-------------------------------
+  vbar            | VBarChart              | Comparaison de valeurs simples
+  hbar            | HBarChart              | Classements horizontaux
+  multi-vbar      | MultiVBarChart         | Comparaison multi-territoires
+  multi-hbar      | MultiHBarChart         | Classements multi-séries
+  multi-line      | MultiLineChart         | Évolution temporelle
+  multi-radar     | MultiRadarChart        | Profils comparatifs
+  waterfall       | WaterfallChart         | Décomposition de variation
+  radial          | RadialChart            | Répartition (donut/cercle)
+  table           | TableChart             | Données tabulaires
+  var-table       | VariableTableChart     | Tableau avec variables
+  text            | TextChart              | KPI / valeur unique
+  comment         | (non rendu)            | Annotations textuelles
+  multi-table     | (non implémenté)       | Déclaré mais sans composant
+
+
+================================================================================
+7. COMMENT AJOUTER UN NOUVEAU TYPE DE GRAPHIQUE
+================================================================================
+
+Pour ajouter une nouvelle forme de représentation (ex. : camembert, scatter
+plot, heatmap, bubble chart...), voici les 4 étapes et fichiers à modifier :
+
+--- ÉTAPE 1 : Créer le composant graphique ---
+
+  Fichier à créer :
+    gme-front-master/src/components/charts/mon-nouveau-chart.tsx
+
+  Structure à respecter :
+    - Étendre VizMixin
+    - Utiliser VizSingleTupleMixin (données simples)
+      OU VizMultiTuplesMixin (données multi-séries)
+    - Implémenter le rendu D3.js dans la méthode render() ou mounted()
+    - Utiliser ResizableMixin pour l'adaptation à la taille
+
+  Modèle recommandé : s'inspirer de radial.tsx (simple) ou
+                      multi-line-chart.tsx (multi-séries)
+
+
+--- ÉTAPE 2 : Enregistrer dans la factory ---
+
+  Fichier à modifier :
+    gme-front-master/src/components/charts/factory.ts
+
+  Modifications :
+    1. Ajouter une valeur dans l'enum TypeViz :
+       ex : MON_GRAPHIQUE = 'mon-graphique',
+
+    2. Ajouter un case dans la fonction graphForType() :
+       ex : case TypeViz.MON_GRAPHIQUE: return MonNouveauChart;
+
+
+--- ÉTAPE 3 : Exposer l'option dans l'interface d'édition ---
+
+  Répertoire à modifier :
+    gme-front-master/src/modules/analysis/engines/reporting/components/
+
+  Objectif : ajouter le nouveau typeViz dans la liste déroulante de sélection
+             du type de graphique lors de la création/édition d'un rapport.
+
+
+--- ÉTAPE 4 : Côté backend (aucune migration nécessaire) ---
+
+  Le champ typeViz dans report-template.ts est de type string libre.
+  Aucune migration de base de données n'est nécessaire — la nouvelle
+  valeur sera sauvegardée automatiquement.
+
+
+================================================================================
+8. EXPORT DES RAPPORTS
+================================================================================
+
+  Format  | Mécanisme                              | Fichier concerné
+  --------|----------------------------------------|---------------------------
+  PDF     | html2canvas (capture du DOM rendu)     | report-export-modal.tsx
+  PNG     | html2canvas + canvg (conversion SVG)   | report-export-modal.tsx
+  XLSX    | ExcelJS (données brutes)               | report-table.tsx
+  CSV     | Export natif JavaScript                | report-table.tsx
+
+
+================================================================================
+9. CONTRÔLE D'ACCÈS AUX RAPPORTS
+================================================================================
+
+Les permissions sont gérées par des scopes hiérarchiques :
+
+  Scope                                   | Accès accordé
+  ----------------------------------------|--------------------------------
+  analysis:reporting:enabled              | Accès en lecture aux rapports
+  analysis:reporting:create               | Création de nouveaux rapports
+  analysis:reporting:edit-self            | Modification de ses propres rapports
+  analysis:reporting:edit-client          | Modification au niveau client
+  analysis:reporting:edit-all-clients     | Administration globale
+  analysis:reporting:share-internal-*     | Partage interne (collègues)
+  analysis:reporting:share-external-*     | Partage externe (clients)
+
+Ces scopes s'appliquent aux moteurs : reporting, implanting, prdt,
+targeting, zone-chalandise.
+
+
+================================================================================
+10. RÉSUMÉ — FICHIERS CLÉS À RETENIR
+================================================================================
+
+  POUR AJOUTER UN NOUVEAU GRAPHIQUE :
+  ------------------------------------
+  1. gme-front-master/src/components/charts/factory.ts
+     → Ajouter TypeViz + case dans graphForType()
+
+  2. gme-front-master/src/components/charts/[nouveau-chart].tsx
+     → Créer le composant Vue+D3
+
+  3. gme-front-master/src/lib/charts/mixins/viz-mixin.tsx
+     → Référence pour les mixins disponibles (ne pas modifier)
+
+  4. gme-front-master/src/modules/analysis/engines/reporting/components/
+     → Exposer le choix dans l'UI d'édition
+
+  5. gme-front-master/src/modules/analysis/components/report-indicator-graph.tsx
+     → Le composant qui appelle graphForType() (ne pas modifier sauf besoin spécifique)
+
+  BACKEND (aucune modif nécessaire pour un nouveau graphique) :
+  -------------------------------------------------------------
+  gme-server-app-master/src/modules/analysis/models/report-template.ts
+  → typeViz est un string libre, pas de migration requise
+
+
+================================================================================
+                              FIN DU RAPPORT
+================================================================================
