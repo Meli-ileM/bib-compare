@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Geoptis - Freemium</title>
+
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <link rel="icon" sizes="32x32" href="img/favicon-32.png" type="image/png">
+    <link rel="icon" sizes="64x64" href="img/favicon-64.png" type="image/png">
+    <link rel="icon" sizes="96x96" href="img/favicon-96.png" type="image/png">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/jquery.passwordRequirements.css" />
+    <link rel="stylesheet" href="css/form.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Roboto&display=swap"
+        rel="stylesheet">
+
+    <!-- Config file -->
+    <script src="js/config.js"></script>
+
+    <!-- Matomo Tag Manager -->
+    <script>
+        var _mtm = window._mtm = window._mtm || [];
+        _mtm.push({ 'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start', 'mtm_env': __env__.analytics.env });
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.async = true; g.src = 'https://analytics.globalmapsolution.com/js/' + __env__.analytics.script; s.parentNode.insertBefore(g, s);
+    </script>
+    <!-- End Matomo Tag Manager -->
+
+</head>
+
+<body>
+
+    <div class="privacy-settings_container">
+        <div class="privacy-settings">
+            <div class="privacy-settings_title">
+                <div class="logo">
+                    <img src="img/geoptis.svg" alt="Logo" />
+                </div>
+                <div class="title">
+                    <h2>Nous respectons votre vie privée</h2>
+                </div>
+            </div>
+            <div class="privacy-settings_frame">
+                <div class="privacy-settings_content">
+                    <div class="privacy-settings_text">
+                        <p>
+                            Lors de votre navigation sur notre site, nous utilisons certains
+                            <a title="Voir la politique des cookies du groupe (nouvelle fenêtre)"
+                                href="https://www.geoptis.com/politique-cookies-freemium" target="_blank"
+                                rel="noopener"> cookies </a>
+                            qui requièrent votre accord pour être déposés. L'identité du responsable de traitement
+                            est <strong>Geoptis</strong>.
+                        </p>
+                        <br />
+                        <p>Les finalités de ces cookies sont les suivantes :</p>
+                        <p><strong>Mesure d’audience :</strong> établir des statistiques anonymes de fréquentation du
+                            site et
+                            améliorer sa performance</p>
+                        <p><strong>Marketing :</strong> personnaliser en temps réel des contenus de notre site.</p>
+                        <br />
+                        <p>En cliquant sur « Tout refuser », vous indiquez votre refus et seuls les cookies nécessaires
+                            au
+                            fonctionnement du site seront déposés. <br />Vous pouvez modifier vos choix à tout moment ou
+                            obtenir plus
+                            d'informations via
+                            <a title="En savoir plus sur les cookies (nouvelle fenêtre)"
+                                href="https://www.geoptis.com/politique-cookies-freemium" target="_blank"
+                                rel="noopener"> notre politique de cookies </a>
+                            et sur la
+                            <a title="En savoir plus sur notre politique de confidentialité (nouvelle fenêtre)"
+                                href="https://www.geoptis.com/politique-de-confidentialite" target="_blank"
+                                rel="noopener"> politique de confidentialité.</a>
+                        </p>
+                    </div>
+                    <div class="privacy-settings_details">
+                        <div class="privacy-settings_tab" id="tab-fonction">
+                            <header>
+                                <div class="item-title">Fonctionnement</div>
+                                <div class="item-subtitle">Toujours activé</div>
+                                <div class="item-icon"><svg viewBox="0 0 511.995 511.995"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M 383.679 263.548 L 146.456 508.235 C 142.328 512.453 134.613 511.968 130.317 507.895 C 126.02 503.833 125.715 496.531 129.822 492.282 L 359.189 255.691 L 129.952 19.232 C 125.844 14.983 126.15 7.682 130.446 3.619 C 134.742 -0.454 142.458 -0.939 146.585 3.279 L 383.808 247.966 C 386.299 250.54 387.231 254.041 386.606 257.309 C 386.365 259.575 385.389 261.781 383.679 263.548 Z"
+                                            style=""></path>
+                                    </svg></div>
+                            </header>
+                            <div class="content">
+                                <p>
+                                    Le stockage ou l’accès technique est strictement nécessaire dans la finalité
+                                    d’intérêt légitime
+                                    de
+                                    permettre l’utilisation d’un service spécifique explicitement demandé par l’abonné
+                                    ou
+                                    l’utilisateur,
+                                    ou dans le seul but d’effectuer la transmission d’une communication sur un réseau de
+                                    communications électroniques.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="privacy-settings_tab" id="tab-statistics">
+                            <header>
+                                <div class="item-title">Mesure d'audience</div>
+                                <div class="btn--switch">
+                                    <div class="btn--switch_track"></div>
+                                    <div class="btn--switch_button"></div>
+                                </div>
+                                <div class="item-icon"><svg viewBox="0 0 511.995 511.995"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M 383.679 263.548 L 146.456 508.235 C 142.328 512.453 134.613 511.968 130.317 507.895 C 126.02 503.833 125.715 496.531 129.822 492.282 L 359.189 255.691 L 129.952 19.232 C 125.844 14.983 126.15 7.682 130.446 3.619 C 134.742 -0.454 142.458 -0.939 146.585 3.279 L 383.808 247.966 C 386.299 250.54 387.231 254.041 386.606 257.309 C 386.365 259.575 385.389 261.781 383.679 263.548 Z"
+                                            style=""></path>
+                                    </svg></div>
+                            </header>
+                            <div class="content">
+                                <p>
+                                    Le stockage ou l’accès technique est utilisé exclusivement à des fins de
+                                    statistiques
+                                </p>
+                            </div>
+                        </div>
+                        <div class="privacy-settings_tab" id="tab-marketing">
+                            <header>
+                                <div class="item-title">Marketing</div>
+                                <div class="btn--switch">
+                                    <div class="btn--switch_track"></div>
+                                    <div class="btn--switch_button"></div>
+                                </div>
+                                <div class="item-icon"><svg viewBox="0 0 511.995 511.995"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M 383.679 263.548 L 146.456 508.235 C 142.328 512.453 134.613 511.968 130.317 507.895 C 126.02 503.833 125.715 496.531 129.822 492.282 L 359.189 255.691 L 129.952 19.232 C 125.844 14.983 126.15 7.682 130.446 3.619 C 134.742 -0.454 142.458 -0.939 146.585 3.279 L 383.808 247.966 C 386.299 250.54 387.231 254.041 386.606 257.309 C 386.365 259.575 385.389 261.781 383.679 263.548 Z"
+                                            style=""></path>
+                                    </svg></div>
+                            </header>
+                            <div class="content">
+                                <p>
+                                    Le stockage ou l’accès technique est nécessaire pour créer des profils
+                                    d’utilisateurs afin
+                                    d’envoyer des publicités, ou pour suivre l’utilisateur sur un site web ou sur
+                                    plusieurs
+                                    sites web ayant des finalités marketing similaires.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="privacy-settings_buttons">
+                    <button class="acceptPrivacySettings">Tout accepter</button>
+                    <button class="rejectPrivacySettings">Tout refuser</button>
+                    <button class="customizePrivacySettings">Personnaliser</button>
+                    <button class="savePrivacySettings">Enregistrer les préférences</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="global-wrapper global-freemium">
+
+        <div class="position-absolute w-100" id="navbar">
+            <a href="https://www.geoptis.com" target="_blank" class="logo-top">
+                <img src="img/geoptis-white.svg" class="img-fluid" alt="Logo Geoptis" />
+            </a>
+            <a href="https://online.globalmapsolution.com" class="connect-top"><img src="img/icon-user.svg" class="img-fluid"
+                    alt="Logo Geoptis" />Connexion</a>
+        </div>
+
+        <div class="home-video-container">
+            <div class="container">
+                <div class="text-on-video">
+                    <h1>
+                        <span class="text-uppercase">La solution cartographique la plus simple d'utilisation</span><span
+                            class="text-uppercase text--color__yellow"> qui
+                            donne vie à vos données</span>
+                    </h1>
+                    <p class="subtitle-top">
+                        Geoptis est la plateforme leader en géointelligence qui répond aux enjeux décisionnels et
+                        opérationnels des directions métiers et "data analyst".
+                    </p>
+                    <div class="actions">
+                        <a href="#contact-form" class="btn-style btn-green">Tester gratuitement</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mouse-anim d-none">
+                <div class="scroll-downs">
+                    <div class="mousey">
+                        <div class="scroller"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="home-top bg-grey">
+            <div class="container">
+                <div class="container mb-3">
+                    <div class="row d-md-flex align-items-center justify-content-between mb-sm-0 mb-md-0">
+                        <div class="col-sm-4 col-md-3 mb-4 mb-md-0">
+                            <img src="img/bpce.png" class="img-fluid" alt="Image entreprise" id="bpce">
+                        </div>
+                        <div class="col-sm-4 col-md-3 mb-4 mb-md-0">
+                            <img src="img/logo-optical.svg" class="img-fluid" alt="Image entreprise">
+                        </div>
+                        <div class="col-sm-4 col-md-3 mb-4 mb-md-0">
+                            <img src="img/logo-groupeactionlogement.png" width="150px;" class="img-fluid"
+                                alt="Image entreprise">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <h2>
+                        <strong>Augmentez votre performance et productivité</strong>
+                        <br>
+                        <strong>
+                            <span style="color: #003DA5;">en révélant le potentiel de vos données</span>
+                        </strong>
+                    </h2>
+                </div>
+            </div>
+            <div class="row align-items-start section-icones-bubbles">
+                <div class="col-lg-3">
+                    <div class="icon-top-hp">
+                        <img src="img/database.svg" title="database" alt="database">
+                    </div>
+                    <div class="icon-hp-txt">
+                        <h3 class="elementor-icon-box-title">
+                            <span>Importez vos données</span>
+                        </h3>
+                        <p class="elementor-icon-box-description">
+                            Et croisez-les avec le catalogue Geoptis
+                            (open data, partenaires certifiés)
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="icon-top-hp">
+                        <img src="img/map.svg" title="database" alt="database">
+                    </div>
+                    <div class="icon-hp-txt">
+                        <h3 class="elementor-icon-box-title">
+                            <span>Cartographiez en un clic</span>
+                        </h3>
+                        <p class="elementor-icon-box-description">Et personnalisez instantanément
+                            vos cartes à l’aide de notre éditeur</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="icon-top-hp">
+                        <img src="img/analytics-1.svg" title="database" alt="database">
+                    </div>
+                    <div class="icon-hp-txt">
+                        <h3 class="elementor-icon-box-title">
+                            <span>Analysez vos résultats</span>
+                        </h3>
+                        <p class="elementor-icon-box-description">Sous forme de rapports cartographiques
+                            ou d’applications géospatiales temps réel</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="icon-top-hp">
+                        <img src="img/community.svg" title="database" alt="database">
+                    </div>
+                    <div class="icon-hp-txt">
+                        <h3 class="elementor-icon-box-title">
+                            <span>Partagez en toute sécurité</span>
+                        </h3>
+                        <p class="elementor-icon-box-description">Vos réalisations avec votre entourage,
+                            ou publiez sur votre site internet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-alt-txt-img">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-txt-hp-l">
+                        <h2><span>Une prise en main immédiate</span> en toute simplicité</h2>
+                        <p>La cartographie est incontournable pour tirer partie de données géographiques toujours plus
+                            volumineuses et hétérogènes.</p>
+                        <p>Geoptis propose la solution de géointelligence la plus simple et rapide pour décrypter
+                            l’information géographique.</p>
+                        <a href="#contact-form" class="btn-style btn-green clr-white mt-4" role="button">Découvrir
+                            la solution</a>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="img/hp-illus-1.gif" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-alt-txt-img reverse-mob">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 order-1 order-md-0">
+                        <img src="img/hp-illus-2.gif" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-md-6 col-txt-hp-r order-0 order-md-1">
+                        <h2><span>Le plus grand écosystème de données</span>
+                            pour contextualiser vos territoires</h2>
+                        <p>Ne perdez plus de temps à recueillir les données de marché.</p>
+
+                        <p>Le catalogue de données et la galerie de cartes de Geoptis rassemblent l’essentiel de l’Open
+                            Data, et des données issues de producteurs certifiés.
+                        </p>
+
+                        <p>À tout moment, vous accédez aux dernières données à jour,
+                            jusqu’au niveau infra-communal (IRIS, adresse).</p>
+
+                        <a href="#contact-form" class="btn-style btn-green clr-white mt-4" role="button">Accéder
+                            aux données</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-alt-txt-img">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-txt-hp-l">
+                        <h2><span>Obtenez les réponses à vos enjeux</span>
+                            grâce aux outils de Geoptis</h2>
+                        <p>Vous cherchez à estimer votre potentiel de marché ? À mesurer votre performance pour chaque
+                            point
+                            de vente ?</p>
+
+                        <p>Vous êtes à la recherche de la meilleure implantation ? Vous souhaitez optimiser vos actions
+                            de
+                            marketing direct sur le territoire ?</p>
+
+                        <p>Grâce à la bibliothèque d’outils de Geoptis, trouvez les réponses à vos enjeux
+                            décisionnels ou
+                            opérationnels.</p>
+                        <a href="#contact-form" class="btn-style btn-green clr-white mt-4" role="button">Une
+                            solution <span class="d-inline d-md-none">pour</span><span class="d-none d-md-inline">qui
+                                s'adapte</span>
+                            à vos besoins</a>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="img/hp-illus-3.gif" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-top bg-grey custom-margin" id="solution">
+            <div class="container">
+                <h2 class="mb-5"><strong>Choisir Geoptis c'est opter pour</strong></h2>
+                <div class="row align-items-stretch mx-lg-n5 mb-5">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-3 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon-top item-cart-custom mx-md-3">
+                            <div style="height: 7rem;">
+                                <img src="img/leader.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <p>
+                                <span class="text--color__blue">La solution leader</span>
+                                <br>en géointelligence
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-3 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon-top item-cart-custom mx-md-3">
+                            <div class="d-flex align-items-center justify-content-center" style="height: 7rem;">
+                                <h3 class="title--color__blue">+20M</h3>
+                            </div>
+                            <p>
+                                <span class="text--color__blue">de données disponibles</span>
+                                <br>instantanément dans l'outil
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-3 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon-top item-cart-custom mx-md-3">
+                            <div class="d-flex align-items-center justify-content-center" style="height: 7rem;">
+                                <h3 class="title--color__blue">+2000</h3>
+                            </div>
+                            <p>
+                                <span class="text--color__blue">utilisateurs inscrits</span>
+                                <br>sur la plateforme
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-3 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon-top item-cart-custom mx-md-3">
+                            <div class="d-flex align-items-center justify-content-center" style="height: 7rem;">
+                                <h3 class="title--color__blue">x10</h3>
+                            </div>
+                            <p>
+                                <span class="text--color__blue">Économie de temps réalisée</span>
+                                <br>dans vos analyses
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#contact-form" class="btn-style btn-green clr-white mt-md-4" role="button">Profiter de la démo
+                    offerte</a>
+            </div>
+        </section>
+
+        <section class="home-top logos-clients pb-2">
+            <div class="container">
+                <h2>
+                    <strong>Nous accompagnons ces entreprises au quotidien</strong>
+                </h2>
+
+                <div class="row">
+                    <div class="col-sm-12 col-lg bloc-quote mx-3">
+                        <div class="top d-md-flex align-items-center justify-content-between">
+                            <div class="image-quote d-flex align-items-center justify-content-center">
+                                <img src="img/quote.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <h4 class="mb-0 desc-sub-title">La plateforme Geoptis : un vrai gain de temps et
+                                d’efficacité au quotidien
+                            </h4>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-content-card my-3">
+                                La plateforme cartographique de Geoptis nous fait gagner beaucoup de temps et
+                                d'efficacité !! Grâce à la solution, nous identifions aisément les zones prioritaires
+                                d'implantation. Nous mesurons également le potentiel des zones de chalandise, qui nous
+                                permet de confronter la cohérence du plan média pour chaque magasin.
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center align-content-end custom-flex">
+                            <img src="img/temoin2.png" width="72px" class="img-fluid mr-lg-2 avatar"
+                                alt="Image section">
+                            <p>
+                                <strong>Jérôme Lechat</strong>
+                                <span class="description-post__italic mt-1">Responsable Media</span>
+                                <span class="description-post">Optical Center</span>
+                            </p>
+                            <img src="img/logo-optical.svg" class="img-fluid avatar pickness" alt="Image section">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-lg bloc-quote mx-3 position-relative">
+                        <div class="top d-md-flex align-items-center justify-content-between">
+                            <div class="image-quote d-flex align-items-center justify-content-center">
+                                <img src="img/quote.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <h4 class="mb-0 desc-sub-title">Un partenariat stratégique pour équiper l’ensemble des
+                                collectivités territoriales</h4>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-content-card my-3">
+                                La solution de géointelligence a immédiatement fait écho à notre offre
+                                Connaissance des Territoires pour les collectivités. <span class="post--text">Grâce à sa
+                                    simplicité d’utilisation et son
+                                    portail d’applications</span>, n’importe quelle collectivité est dorénavant en
+                                mesure d’éclairer ses prises de décisions et piloter ses politiques publiques.
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center custom-flex">
+                            <img src="img/temoin.png" width="72px" class="img-fluid mr-lg-2 avatar" alt="Image section">
+                            <p>
+                                <strong>Christel Papillon Viollet </strong>
+                                <span class="description-post__italic mt-1">Directrice UA</span>
+                                <span class="description-post">La Poste Nouveaux Services</span>
+                            </p>
+                            <img src="img/lpg.png" class="img-fluid avatar pickness" alt="Image section">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-top section-pictos bg-grey">
+            <div class="container px-0">
+                <h2><strong>Une solution <span class="post--text">récompensée à plusieurs reprises</span></strong></h2>
+                <div class="row mx-mb-n5 mb-md-5 mx-auto" style="width: 100%;">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-5 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon px-4 mx-md-3">
+                            <div style="height: 7rem;">
+                                <img src="img/challenge.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <p>Geoptis parmi « les 100 start-ups où investir »</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-5 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon px-4 mx-md-3">
+                            <div style="height: 7rem;">
+                                <img src="img/grainesdeboss.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <p>Lauréat de la 15e édition, en partenariat avec le Ministère de l’Economie et M6</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-5 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon px-4 mx-md-3">
+                            <div style="height: 7rem;">
+                                <img src="img/logo-wilco.png" class="img-fluid" alt="Image section">
+                            </div>
+                            <p>Lauréat du plus grand accélérateur digital de start-ups en France</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 mb-5 col-xl-3 px-0">
+                        <div class="bloc-shadow-icon px-4 mx-md-3">
+                            <div style="height: 7rem;">
+                                <img src="img/innovation.svg" class="img-fluid" alt="Image section">
+                            </div>
+                            <p>Lauréat de la 15e édition de l’Observatoire de la relation Grandes Entreprises</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact-form" class="section-contact-hp">
+            <div class="section-title">
+                <h2 class="elementor-heading-title elementor-size-default">
+                    Vous souhaitez tester la solution Geoptis gratuitement ?
+                    <p>Il vous suffit de compléter le formulaire ci-dessous.</p>
+                </h2>
+            </div>
+
+            <div class="container-form-hp">
+
+                <form method="POST" action="#" id="_form_1_" class="_form _form_1 _inline-form  _dark" novalidate>
+                    <div class="_form-content">
+
+                        <input id="token" name="token" type="hidden" value="">
+
+                        <div class="name_container">
+                            <div class="_form_element _x58213795 _full_width ">
+                                <div class="_field-wrapper">
+                                    <input type="text" name="firstname" placeholder="Prénom *" required />
+                                </div>
+                            </div>
+                            <div class="_form_element _x58213795 _full_width ">
+                                <div class="_field-wrapper">
+                                    <input type="text" name="lastname" placeholder="Nom *" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x45632076 _full_width">
+                            <div class="_field-wrapper">
+                                <input type="text" name="email" placeholder="Email *" required />
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x45632076 _full_width">
+                            <div class="_field-wrapper">
+                                <input type="text" name="phone" placeholder="Téléphone *" required/>
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x58213795 _full_width ">
+                            <div class="_field-wrapper">
+                                <div class="custom-select-wrapper" id="marche_wrapper">
+                                    <div class="custom-select-trigger" id="marche_trigger">
+                                        <span id="marche_label">Vous travaillez dans *</span>
+                                        <svg class="custom-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </div>
+                                    <ul class="custom-select-dropdown" id="marche_dropdown">
+                                        <li class="custom-select-option" data-value="20118">Une entreprise</li>
+                                        <li class="custom-select-option" data-value="16125">Une collectivité ou un établissement public</li>
+                                        <li class="custom-select-option" data-value="18">Autre</li>
+                                    </ul>
+                                </div>
+                                <input type="hidden" name="marche" id="marche_hidden" value="" />
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x58213795 _full_width " id="organisme_container" style="display:none;">
+                            <div class="_field-wrapper">
+                                <input type="text" name="enterprise" id="organisme_input" placeholder="Nom de l'organisme *" disabled />
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x58213795 _full_width">
+                            <div class="_field-wrapper">
+                                <input type="password" class="pr-password" name="password" placeholder="Mot de passe *"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="_form_element _x58213795 _full_width">
+                            <div class="_field-wrapper">
+                                <input type="password" name="password_confirm"
+                                    placeholder="Confirmation du mot de passe *" required />
+                            </div>
+                        </div>
+
+                        <div id="_error_required" class="alert alert-danger" role="alert">Tous les champs sont
+                            obligatoires.</div>
+
+                        <div class="_form_element _full_width ">
+                            <label class="_form-label">
+                                * Tous les champs sont obligatoires.
+                            </label>
+                        </div>
+
+                        <div class="_form_element _field3 _full_width ">
+
+                            <label class="_form-label">
+                                Les données à caractère personnel recueillies font l'objet de traitements dont le responsable est Geoptis. Elles sont traitées pour la gestion de votre inscription, la création de votre compte et le suivi de la relation client. Pour en savoir plus sur vos droits et sur la protection de vos données, <a href="https://www.geoptis.com/politique-de-confidentialite" target="_blank">consultez notre politique de confidentialité</a>.
+                            </label>
+
+                        </div>
+
+                        <div class="alert alert-danger email-exists" role="alert"> L'adresse e-mail existe déjà.</div>
+                        <div class="alert alert-danger errored" role="alert">Une erreur est survenue.</div>
+                        <div class="_button-wrapper _full_width">
+                            <button id="_form_1_submit" class="_submit" type="submit">
+                                <div class="lds-ring">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                <span>Valider</span>
+                            </button>
+                        </div>
+                        <div class="_clear-element">
+                        </div>
+                    </div>
+                    <div class="_form-thank-you" style="display:none;">
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer class="site-footer py-5">
+            <div class="container">
+                <div class="row d-md-flex justify-content-center align-items-center">
+                    <div class="col-md-12 col-lg-12 d-flex justify-content-center footer--ul">
+                        <ul class="list-group list-group-horizontal-lg text-center">
+                            <li><a href="https://www.geoptis.com/cgu" target="_blank">CGU</a></li>
+                            <li><a id="cookiesParams" href="#">Gérer mes cookies</a></li>
+                            <li><a href="https://www.geoptis.com/mentions-legales" target="_blank">Mentions
+                                    légales</a></li>
+                            <li><a href="https://www.linkedin.com/company/geoptis" target="_blank">Suivez
+                                    notre actualité sur <img src="img/media-link.svg" alt="Image footer réseau social">
+                                </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 mt-md-12 mt-3 d-md-flex justify-content-center">
+                    <a href="https://www.geoptis.com" target="_blank"><img src="img/bannier-geoptis.svg" class="logo-footer" alt="Logo Geoptis"></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/jquery.passwordRequirements.min.js"></script>
+<script src="js/serialize.js"></script>
+<script src="js/scripts.81f314650eddf6033a1435edbdb383947.js"></script>
+
+<script>
+    (function () {
+        var wrapper   = document.getElementById('marche_wrapper');
+        var trigger   = document.getElementById('marche_trigger');
+        var dropdown  = document.getElementById('marche_dropdown');
+        var label     = document.getElementById('marche_label');
+        var hidden    = document.getElementById('marche_hidden');
+        var container = document.getElementById('organisme_container');
+        var orgInput  = document.getElementById('organisme_input');
+        var form      = document.getElementById('_form_1_');
+
+        // Ouvrir / fermer le dropdown
+        trigger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            wrapper.classList.toggle('open');
+        });
+
+        // Sélection d'une option
+        dropdown.querySelectorAll('.custom-select-option').forEach(function (option) {
+            option.addEventListener('click', function () {
+                var value = this.dataset.value;
+                hidden.value = value;
+                label.textContent = this.textContent;
+                wrapper.classList.remove('open');
+                wrapper.classList.add('selected');
+                wrapper.classList.remove('has-error');
+
+                // Marquer l'option active
+                dropdown.querySelectorAll('.custom-select-option').forEach(function (o) { o.classList.remove('active'); });
+                this.classList.add('active');
+
+                // Afficher "Nom de l'organisme" pour Entreprise ou Collectivité
+                if (value === '20118' || value === '16125') {
+                    container.style.display = '';
+                    orgInput.disabled = false;
+                    orgInput.setAttribute('required', '');
+                } else {
+                    container.style.display = 'none';
+                    orgInput.disabled = true;
+                    orgInput.removeAttribute('required');
+                    orgInput.value = '';
+                }
+            });
+        });
+
+        // Fermer si clic ailleurs
+        document.addEventListener('click', function () {
+            wrapper.classList.remove('open');
+        });
+
+        // Validation : bloquer la soumission si aucun choix fait
+        form.addEventListener('submit', function (e) {
+            if (!hidden.value) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                wrapper.classList.add('has-error');
+                document.getElementById('_error_required').style.display = 'block';
+            } else {
+                wrapper.classList.remove('has-error');
+            }
+        }, true);
+    })();
+</script>
+
+<!-- LinkedIn Insight Tag -->
+<script type="text/javascript">
+_linkedin_partner_id = "5655788";
+window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+</script><script type="text/javascript">
+(function(l) {
+if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+window.lintrk.q=[]}
+var s = document.getElementsByTagName("script")[0];
+var b = document.createElement("script");
+b.type = "text/javascript";b.async = true;
+b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+s.parentNode.insertBefore(b, s);})(window.lintrk);
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=5655788&fmt=gif" />
+</noscript>
+<!-- End LinkedIn Insight Tag -->
+
+</html>
